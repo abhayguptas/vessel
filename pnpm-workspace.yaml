@@ -1,0 +1,6 @@
+packages:
+  - 'api-layer/*'
+  - 'packages/*'
+  - 'web-layer/*'
+allowBuilds:
+  esbuild: true

@@ -1,0 +1,25 @@
+{
+  "name": "@vessel/user-service",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "zod": "^3.22.4",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "@vessel/db-client": "workspace:*",
+    "@vessel/auth": "workspace:*",
+    "@vessel/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/bcryptjs": "^2.4.6",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}

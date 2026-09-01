@@ -1,0 +1,1 @@
+{"message":"Job submitted","job":{"id":"38895045-e4f3-46f3-8cdf-fb4b34e6bef9","organizationId":"04c07182-542e-499c-a1ca-21376428cb3d","type":"real-test-2","status":"queued","priority":"normal","payload":{"cmd":["sh","-c","echo start && sleep 2 && echo done"],"image":"alpine:latest"},"createdAt":"2026-09-01T06:38:36.536Z","updatedAt":"2026-09-01T06:38:36.536Z"}}

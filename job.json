@@ -1,0 +1,1 @@
+{"message":"Job submitted","job":{"id":"642ce85d-526a-43a7-b357-285ea0d1b8df","organizationId":"04c07182-542e-499c-a1ca-21376428cb3d","type":"real-test","status":"queued","priority":"normal","payload":{"cmd":["echo","Hello from Vessel"],"image":"alpine:latest"},"createdAt":"2026-09-01T06:34:11.490Z","updatedAt":"2026-09-01T06:34:11.490Z"}}

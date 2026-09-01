@@ -1,0 +1,27 @@
+node_modules/
+dist/
+build/
+.turbo/
+
+# Go
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Env
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+
+plan/
