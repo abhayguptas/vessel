@@ -41,8 +41,8 @@ flowchart LR
     Browser[React/Vite UI] --> UserAPI[user-service :3001]
     Browser --> JobAPI[job-service :3002]
 
-    UserAPI --> Auth[@vessel/auth]
-    UserAPI --> DBClient[@vessel/db-client]
+    UserAPI --> Auth["@vessel/auth"]
+    UserAPI --> DBClient["@vessel/db-client"]
     JobAPI --> Auth
     JobAPI --> DBClient
     DBClient --> Postgres[(PostgreSQL)]
