@@ -1,22 +1,10 @@
 <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Atlas logo</title>
-  <desc id="desc">A connected workload graph forming the letter A.</desc>
+  <title id="title">Vessel logo</title>
+  <desc id="desc">Vessel V shaped logo</desc>
   <rect width="160" height="160" rx="36" fill="#07111F"/>
-  <path d="M80 28L35 126" stroke="url(#atlas-line)" stroke-width="9" stroke-linecap="round"/>
-  <path d="M80 28L125 126" stroke="url(#atlas-line)" stroke-width="9" stroke-linecap="round"/>
-  <path d="M58 80H102" stroke="url(#atlas-line)" stroke-width="9" stroke-linecap="round"/>
-  <path d="M80 80V126" stroke="#38BDF8" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 9" opacity=".7"/>
-  <circle cx="80" cy="28" r="12" fill="#F8FAFC"/>
-  <circle cx="35" cy="126" r="14" fill="#60A5FA"/>
-  <circle cx="125" cy="126" r="14" fill="#22C55E"/>
-  <circle cx="58" cy="80" r="10" fill="#A78BFA"/>
-  <circle cx="102" cy="80" r="10" fill="#38BDF8"/>
-  <circle cx="80" cy="126" r="8" fill="#F59E0B"/>
-  <defs>
-    <linearGradient id="atlas-line" x1="35" y1="28" x2="125" y2="126" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#A78BFA"/>
-      <stop offset=".5" stop-color="#38BDF8"/>
-      <stop offset="1" stop-color="#22C55E"/>
-    </linearGradient>
-  </defs>
+  <g transform="translate(30, 30)">
+    <path d="M20 20 L50 85 L80 20 L65 20 L50 55 L35 20 Z" fill="#EA580C" />
+    <path d="M50 85 L80 20 L95 20 L50 100 Z" fill="#F8FAFC" />
+    <path d="M5 20 L20 20 L50 85 L50 100 Z" fill="#0284C7" />
+  </g>
 </svg>
