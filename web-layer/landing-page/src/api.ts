@@ -1,5 +1,5 @@
-export const USER_SERVICE_URL = 'http://localhost:3001/api/v1/users';
-export const JOB_SERVICE_URL = 'http://localhost:3002/api/v1/jobs';
+export const USER_SERVICE_URL = '/api/v1/users';
+export const JOB_SERVICE_URL = '/api/v1/jobs';
 
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const token = localStorage.getItem('accessToken');

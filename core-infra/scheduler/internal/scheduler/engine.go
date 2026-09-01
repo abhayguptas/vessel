@@ -97,8 +97,19 @@ func (e *Engine) processNextJob(ctx context.Context) {
 		Payload: execPayload.Cmd,
 	}
 
+	// Get active worker from Redis
+	targetWorkerID, err := e.queue.GetActiveWorker(ctx)
+	if err != nil || targetWorkerID == "" {
+		log.Printf("No active workers available for job %s: %v", job.ID, err)
+		// Revert status back so it can be retried
+		e.db.UpdateJobStatus(ctx, job.ID, "queued")
+		// Put back in queue
+		e.queue.Push(ctx, *job)
+		return
+	}
+
 	// Publish assignment to NATS
-	err = e.nats.PublishAssignment(e.workerID, assignment)
+	err = e.nats.PublishAssignment(targetWorkerID, assignment)
 	if err != nil {
 		log.Printf("Failed to publish NATS assignment for job %s: %v", job.ID, err)
 		// Revert status back so it can be retried
@@ -108,5 +119,5 @@ func (e *Engine) processNextJob(ctx context.Context) {
 		return
 	}
 
-	log.Printf("Job %s assigned to worker %s via NATS", job.ID, e.workerID)
+	log.Printf("Job %s assigned to worker %s via NATS", job.ID, targetWorkerID)
 }

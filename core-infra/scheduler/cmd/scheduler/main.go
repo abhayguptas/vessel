@@ -19,7 +19,7 @@ func main() {
 
 	redisAddr := os.Getenv("REDIS_URL")
 	if redisAddr == "" {
-		redisAddr = "localhost:6379"
+		redisAddr = "redis://localhost:6379"
 	}
 
 	dbUrl := os.Getenv("DATABASE_URL")
@@ -45,7 +45,10 @@ func main() {
 	defer dbClient.Close()
 
 	// Init Queue
-	redisQueue := queue.NewRedisQueue(redisAddr)
+	redisQueue, err := queue.NewRedisQueue(redisAddr)
+	if err != nil {
+		log.Fatalf("Failed to init Redis: %v", err)
+	}
 
 	// Init NATS
 	natsClient, err := messaging.NewNATSClient(natsUrl)

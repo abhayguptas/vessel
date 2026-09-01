@@ -29,6 +29,32 @@ func NewDockerRuntime(nc *nats.Conn) (*DockerRuntime, error) {
 	return &DockerRuntime{cli: cli, nc: nc}, nil
 }
 
+func (d *DockerRuntime) getEnvInt(key string, def int) int {
+	val := os.Getenv(key)
+	if val == "" {
+		return def
+	}
+	var res int
+	fmt.Sscanf(val, "%d", &res)
+	if res == 0 {
+		return def
+	}
+	return res
+}
+
+func (d *DockerRuntime) getEnvFloat(key string, def float64) float64 {
+	val := os.Getenv(key)
+	if val == "" {
+		return def
+	}
+	var res float64
+	fmt.Sscanf(val, "%f", &res)
+	if res == 0 {
+		return def
+	}
+	return res
+}
+
 type LogPayload struct {
 	JobID     string `json:"job_id"`
 	Timestamp string `json:"timestamp"`
@@ -39,8 +65,8 @@ type LogPayload struct {
 func (d *DockerRuntime) ExecuteJob(ctx context.Context, jobID string, img string, payload []string) error {
 	log.Printf("Executing job %s with image %s", jobID, img)
 
-	// Enforce a strict 5-minute execution timeout to prevent malicious/stuck payloads
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Minute)
+	timeoutSec := d.getEnvInt("WORKER_EXECUTION_TIMEOUT_SEC", 300)
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(timeoutSec)*time.Second)
 	defer cancel()
 
 	start := time.Now()
@@ -60,7 +86,8 @@ func (d *DockerRuntime) ExecuteJob(ctx context.Context, jobID string, img string
 	}, &container.HostConfig{
 		AutoRemove: true,
 		Resources: container.Resources{
-			Memory: 512 * 1024 * 1024,
+			Memory:   int64(d.getEnvInt("WORKER_MEM_LIMIT_MB", 256)) * 1024 * 1024,
+			NanoCPUs: int64(d.getEnvFloat("WORKER_CPU_LIMIT", 0.5) * 1e9),
 		},
 	}, nil, nil, fmt.Sprintf("vessel-job-%s", jobID))
 

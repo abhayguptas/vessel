@@ -1,0 +1,146 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: web-layer/landing-page/Dockerfile
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - user-service
+      - job-service
+    networks:
+      - vessel_net
+
+  user-service:
+    build:
+      context: .
+      dockerfile: api-layer/user-service/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://vessel_admin:secret_password@postgres:5432/vessel_db
+      - USER_SERVICE_PORT=3001
+      - JWT_SECRET=${JWT_SECRET:-super_secret_vessel_key_change_in_prod}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - vessel_net
+
+  job-service:
+    build:
+      context: .
+      dockerfile: api-layer/job-service/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://vessel_admin:secret_password@postgres:5432/vessel_db
+      - REDIS_URL=redis://redis:6379
+      - NATS_URL=nats://nats:4222
+      - JOB_SERVICE_PORT=3002
+      - JWT_SECRET=${JWT_SECRET:-super_secret_vessel_key_change_in_prod}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    networks:
+      - vessel_net
+
+  scheduler:
+    build:
+      context: core-infra/scheduler
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://vessel_admin:secret_password@postgres:5432/vessel_db
+      - REDIS_URL=redis://redis:6379
+      - NATS_URL=nats://nats:4222
+      - WORKER_NODE_ID=scheduler-prod-1
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    networks:
+      - vessel_net
+
+  execution-agent:
+    build:
+      context: core-infra/execution-agent
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://vessel_admin:secret_password@postgres:5432/vessel_db
+      - REDIS_URL=redis://redis:6379
+      - NATS_URL=nats://nats:4222
+      - WORKER_NODE_ID=worker-prod-1
+      - WORKER_EXECUTION_TIMEOUT_SEC=300
+      - WORKER_MEM_LIMIT_MB=256
+      - WORKER_CPU_LIMIT=0.5
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    networks:
+      - vessel_net
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: vessel_admin
+      POSTGRES_PASSWORD: secret_password
+      POSTGRES_DB: vessel_db
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vessel_admin -d vessel_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vessel_net
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data_prod:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vessel_net
+
+  nats:
+    image: nats:alpine
+    command: ["-js", "-m", "8222"]
+    volumes:
+      - nats_data_prod:/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8222/varz"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vessel_net
+
+volumes:
+  postgres_data_prod:
+  redis_data_prod:
+  nats_data_prod:
+
+networks:
+  vessel_net:
+    driver: bridge

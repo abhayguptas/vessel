@@ -18,11 +18,13 @@ type RedisQueue struct {
 	client *redis.Client
 }
 
-func NewRedisQueue(addr string) *RedisQueue {
-	client := redis.NewClient(&redis.Options{
-		Addr: addr,
-	})
-	return &RedisQueue{client: client}
+func NewRedisQueue(redisUrl string) (*RedisQueue, error) {
+	opt, err := redis.ParseURL(redisUrl)
+	if err != nil {
+		return nil, err
+	}
+	client := redis.NewClient(opt)
+	return &RedisQueue{client: client}, nil
 }
 
 // Push adds a job to the priority queue
@@ -58,6 +60,23 @@ func (q *RedisQueue) Pop(ctx context.Context) (*JobPayload, error) {
 	}
 
 	return &job, nil
+}
+
+// GetActiveWorker returns the ID of a randomly selected active worker
+func (q *RedisQueue) GetActiveWorker(ctx context.Context) (string, error) {
+	// Pick a random active worker from the sorted set
+	// In production, you'd likely want load balancing or just ZRandMember
+	res, err := q.client.ZRandMember(ctx, "vessel:workers:active", 1).Result()
+	if err != nil {
+		if err == redis.Nil {
+			return "", nil
+		}
+		return "", err
+	}
+	if len(res) == 0 {
+		return "", nil
+	}
+	return res[0], nil
 }
 
 func getPriorityScore(priority string) float64 {

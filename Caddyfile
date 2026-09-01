@@ -1,0 +1,27 @@
+:80 {
+	# Enable compression for static assets
+	encode gzip zstd
+
+	# Reverse Proxy for API Layer
+	handle /api/v1/users* {
+		reverse_proxy user-service:3001
+	}
+
+	# Explicit handling for SSE (Server-Sent Events)
+	handle /api/v1/jobs/*/logs {
+		reverse_proxy job-service:3002 {
+			flush_interval -1
+		}
+	}
+
+	handle /api/v1/jobs* {
+		reverse_proxy job-service:3002
+	}
+
+	# Serve static Vite frontend
+	handle {
+		root * /srv
+		try_files {path} {path}/ /index.html
+		file_server
+	}
+}

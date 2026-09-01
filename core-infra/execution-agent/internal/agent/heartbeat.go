@@ -14,14 +14,16 @@ type HeartbeatManager struct {
 	nodeID string
 }
 
-func NewHeartbeatManager(redisAddr string, nodeID string) *HeartbeatManager {
-	client := redis.NewClient(&redis.Options{
-		Addr: redisAddr,
-	})
+func NewHeartbeatManager(redisUrl string, nodeID string) (*HeartbeatManager, error) {
+	opt, err := redis.ParseURL(redisUrl)
+	if err != nil {
+		return nil, err
+	}
+	client := redis.NewClient(opt)
 	return &HeartbeatManager{
 		client: client,
 		nodeID: nodeID,
-	}
+	}, nil
 }
 
 // Start pulses a heartbeat to Redis every 5 seconds

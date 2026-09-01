@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 import { db, jobs, apiKeys } from '@vessel/db-client';
 import { logger } from '@vessel/logger';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, sql } from 'drizzle-orm';
 import { hashApiKey, verifyAccessToken } from '@vessel/auth';
 import { Redis } from 'ioredis';
 import { getNatsConnection, sc } from './nats.js';
@@ -64,8 +64,20 @@ export function startReconciliationLoop() {
           }
         }
       }
+
     } catch (e: any) {
       logger.error({ err: e.message }, 'Reconciler DB fetch error');
+    }
+
+    // Demo Mode Cleanup: delete completed/failed jobs older than 1 hour
+    try {
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+      const result = await db.execute(
+        sql`DELETE FROM ${jobs} WHERE status IN ('completed', 'failed') AND updated_at < ${oneHourAgo}`
+      );
+      logger.info('Cleaned up old demo jobs');
+    } catch (e: any) {
+      logger.error({ err: e.message }, 'Cleanup loop error');
     }
   }, 10000); // run every 10 seconds
 }
@@ -73,11 +85,23 @@ export function startReconciliationLoop() {
 const jobSubmitSchema = z.object({
   type: z.string().min(1),
   priority: z.enum(['high', 'normal', 'low']).default('normal'),
-  payload: z.object({
-    image: z.string().min(1),
-    cmd: z.array(z.string()).min(1),
-  }),
+  workloadId: z.enum(['hello-vessel', 'processing-demo', 'failure-demo']),
 });
+
+const ALLOWED_WORKLOADS: Record<string, { image: string; cmd: string[] }> = {
+  'hello-vessel': {
+    image: 'alpine:latest',
+    cmd: ['sh', '-c', 'echo "Hello from Vessel!" && sleep 2'],
+  },
+  'processing-demo': {
+    image: 'alpine:latest',
+    cmd: ['sh', '-c', 'echo "Starting processing..." && sleep 2 && echo "Processing stage 1 complete." && sleep 3 && echo "Processing stage 2 complete." && sleep 1 && echo "Done."'],
+  },
+  'failure-demo': {
+    image: 'alpine:latest',
+    cmd: ['sh', '-c', 'echo "Attempting dangerous operation..." && sleep 2 && echo "ERROR: Simulated failure occurred!" >&2 && exit 1'],
+  },
+};
 
 export async function submitJob(req: Request, res: Response): Promise<void> {
   let organizationId: string | undefined;
@@ -109,12 +133,13 @@ export async function submitJob(req: Request, res: Response): Promise<void> {
 
   try {
     const data = jobSubmitSchema.parse(req.body);
+    const safePayload = ALLOWED_WORKLOADS[data.workloadId];
 
     const [job] = await db.insert(jobs).values({
       organizationId,
       type: data.type,
       priority: data.priority as 'high' | 'normal' | 'low',
-      payload: data.payload,
+      payload: safePayload,
     }).returning();
 
     logger.info({ jobId: job.id, orgId: organizationId }, 'Job created in PostgreSQL');

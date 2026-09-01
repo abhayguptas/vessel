@@ -1,10 +1,11 @@
-<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Vessel logo</title>
-  <desc id="desc">Vessel V shaped logo</desc>
-  <rect width="160" height="160" rx="36" fill="#07111F"/>
-  <g transform="translate(30, 30)">
-    <path d="M20 20 L50 85 L80 20 L65 20 L50 55 L35 20 Z" fill="#EA580C" />
-    <path d="M50 85 L80 20 L95 20 L50 100 Z" fill="#F8FAFC" />
-    <path d="M5 20 L20 20 L50 85 L50 100 Z" fill="#0284C7" />
-  </g>
+<svg 
+  width="112" 
+  height="112" 
+  viewBox="0 0 100 100" 
+  fill="none" 
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path d="M20 20 L50 85 L80 20 L65 20 L50 55 L35 20 Z" fill="#EA580C" />
+  <path d="M50 85 L80 20 L95 20 L50 100 Z" fill="#4B5563" />
+  <path d="M5 20 L20 20 L50 85 L50 100 Z" fill="#0284C7" />
 </svg>

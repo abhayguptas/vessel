@@ -13,9 +13,7 @@ export default function Dashboard() {
   const [apiKeys, setApiKeys] = useState<any[]>([]);
   
   const [showTriggerModal, setShowTriggerModal] = useState(false);
-  const [jobType, setJobType] = useState('demo-workload');
-  const [jobPriority, setJobPriority] = useState('normal');
-  const [jobPayload, setJobPayload] = useState('{\n  "image": "alpine:latest",\n  "cmd": ["sh", "-c", "echo \\"Starting workload...\\"; sleep 1; echo \\"Processing item 1/3\\"; sleep 1; echo \\"Processing item 2/3\\"; sleep 1; echo \\"Processing item 3/3\\"; sleep 1; echo \\"Workload completed.\\"; exit 0"]\n}');
+  const [workloadId, setWorkloadId] = useState('hello-vessel');
   const [isTriggering, setIsTriggering] = useState(false);
   const [triggerError, setTriggerError] = useState('');
 
@@ -132,22 +130,13 @@ export default function Dashboard() {
     setIsTriggering(true);
     setTriggerError('');
     
-    let parsedPayload;
-    try {
-      parsedPayload = JSON.parse(jobPayload);
-    } catch (err) {
-      setTriggerError('Invalid JSON payload');
-      setIsTriggering(false);
-      return;
-    }
-
     try {
       const res = await fetchWithAuth(JOB_SERVICE_URL, {
         method: 'POST',
         body: JSON.stringify({
-          type: jobType,
-          priority: jobPriority,
-          payload: parsedPayload
+          type: workloadId,
+          priority: 'normal',
+          workloadId: workloadId
         })
       });
       if (res.ok) {
@@ -544,38 +533,17 @@ export default function Dashboard() {
             {triggerError && <div className="auth-error">{triggerError}</div>}
             <form onSubmit={handleTriggerSubmit} className="auth-form">
               <div>
-                <label style={{ color: '#64748b' }}>Job Type</label>
-                <input 
-                  type="text" 
-                  className="auth-input" 
-                  style={{ background: '#f8fafc', color: '#1e293b', border: '1px solid #e2e8f0' }}
-                  value={jobType} 
-                  onChange={e => setJobType(e.target.value)} 
-                  required 
-                />
-              </div>
-              <div>
-                <label style={{ color: '#64748b' }}>Priority</label>
+                <label style={{ color: '#64748b' }}>Workload Type</label>
                 <select 
                   className="auth-input" 
-                  style={{ background: '#f8fafc', color: '#1e293b', border: '1px solid #e2e8f0' }}
-                  value={jobPriority} 
-                  onChange={e => setJobPriority(e.target.value)}
+                  style={{ background: '#f8fafc', color: '#1e293b', border: '1px solid #e2e8f0', width: '100%' }}
+                  value={workloadId} 
+                  onChange={e => setWorkloadId(e.target.value)}
                 >
-                  <option value="low">Low</option>
-                  <option value="normal">Normal</option>
-                  <option value="high">High</option>
+                  <option value="hello-vessel">Hello Vessel (Fast/Safe)</option>
+                  <option value="processing-demo">Processing Demo (Simulates Work)</option>
+                  <option value="failure-demo">Failure Demo (Simulates Error)</option>
                 </select>
-              </div>
-              <div>
-                <label style={{ color: '#64748b' }}>Payload (JSON)</label>
-                <textarea 
-                  className="auth-input" 
-                  style={{ height: '120px', fontFamily: 'monospace', background: '#f8fafc', color: '#1e293b', border: '1px solid #e2e8f0' }}
-                  value={jobPayload} 
-                  onChange={e => setJobPayload(e.target.value)} 
-                  required 
-                />
               </div>
               <button type="submit" className="flup-btn-primary" disabled={isTriggering} style={{ marginTop: '1rem', width: '100%', justifyContent: 'center' }}>
                 {isTriggering ? 'Triggering...' : 'Submit Workload'}

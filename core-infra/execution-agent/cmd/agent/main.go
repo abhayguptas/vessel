@@ -34,7 +34,7 @@ func main() {
 
 	redisAddr := os.Getenv("REDIS_URL")
 	if redisAddr == "" {
-		redisAddr = "localhost:6379"
+		redisAddr = "redis://localhost:6379"
 	}
 
 	natsUrl := os.Getenv("NATS_URL")
@@ -55,7 +55,10 @@ func main() {
 	defer dbClient.Close()
 
 	// 2. Initialize Heartbeat
-	hbManager := agent.NewHeartbeatManager(redisAddr, nodeID)
+	hbManager, err := agent.NewHeartbeatManager(redisAddr, nodeID)
+	if err != nil {
+		log.Fatalf("Failed to init heartbeat Redis: %v", err)
+	}
 	go hbManager.Start(ctx)
 
 	// 3. Connect to NATS JetStream
