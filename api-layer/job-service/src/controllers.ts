@@ -77,7 +77,7 @@ export function startReconciliationLoop() {
       );
       logger.info('Cleaned up old demo jobs');
     } catch (e: any) {
-      logger.error({ err: e.message }, 'Cleanup loop error');
+      logger.error({ err: e }, 'Cleanup loop error');
     }
   }, 10000); // run every 10 seconds
 }
