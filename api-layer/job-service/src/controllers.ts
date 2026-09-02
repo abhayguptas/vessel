@@ -202,16 +202,20 @@ export async function streamJobLogs(req: Request, res: Response): Promise<void> 
   const jobId = req.params.id;
 
   const authHeader = req.headers['authorization'] || req.query.token as string;
+
   if (!authHeader) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }
+
   let token = authHeader;
+
   if (token.startsWith('Bearer ')) {
     token = token.split(' ')[1];
   }
-  
+
   let decoded;
+
   try {
     decoded = verifyAccessToken(token);
   } catch (e) {
@@ -220,56 +224,99 @@ export async function streamJobLogs(req: Request, res: Response): Promise<void> 
   }
 
   try {
-    // Multi-tenancy check: Verify job belongs to this org
-    const jobRecords = await db.select().from(jobs).where(eq(jobs.id, jobId));
+    // Verify job exists and belongs to this organization
+    const jobRecords = await db
+      .select()
+      .from(jobs)
+      .where(eq(jobs.id, jobId));
+
     if (jobRecords.length === 0) {
       res.status(404).json({ error: 'Job not found' });
       return;
     }
+
     if (jobRecords[0].organizationId !== decoded.org) {
-      res.status(403).json({ error: 'Forbidden: Job belongs to another organization' });
+      res.status(403).json({
+        error: 'Forbidden: Job belongs to another organization',
+      });
       return;
     }
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error verifying authorization' });
+    logger.error({ err }, `Failed to verify job ${jobId}`);
+    res.status(500).json({
+      error: 'Internal server error verifying authorization',
+    });
     return;
   }
 
+  // SSE headers
   res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
   res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
   res.flushHeaders();
 
   try {
     const nc = getNatsConnection();
     const js = nc.jetstream();
-    
-    // We create an ephemeral consumer for this specific job's logs
-    const consumer = await js.consumers.get('LOGS', { 
-      filterSubjects: [`logs.job.${jobId}`]
+
+    // Create an ephemeral consumer for this specific job.
+    // DeliverPolicy.All replays existing log messages.
+    const consumer = await js.consumers.add('LOGS', {
+      filter_subject: `logs.job.${jobId}`,
+      deliver_policy: DeliverPolicy.All,
+      ack_policy: AckPolicy.None,
     });
 
     const messages = await consumer.consume();
-    
-    logger.info(`Started durable SSE log stream for job ${jobId}`);
+
+    logger.info(`Started SSE log stream for job ${jobId}`);
+
+    // SSE heartbeat keeps proxies/connections alive.
+    const heartbeat = setInterval(() => {
+      if (!res.writableEnded) {
+        res.write(': heartbeat\n\n');
+      }
+    }, 15000);
 
     (async () => {
-      for await (const m of messages) {
-        res.write(`data: ${sc.decode(m.data)}\n\n`);
+      try {
+        for await (const m of messages) {
+          if (res.writableEnded) {
+            break;
+          }
+
+          res.write(`data: ${sc.decode(m.data)}\n\n`);
+        }
+      } catch (err: any) {
+        logger.error(
+          { err: err.message },
+          `Error streaming logs for job ${jobId}`
+        );
       }
-    })().catch(err => {
-      logger.error(`Error streaming logs for job ${jobId}: ${err.message}`);
-    });
+    })();
 
     req.on('close', () => {
+      clearInterval(heartbeat);
       messages.stop();
-      logger.info(`Closed durable SSE log stream for job ${jobId}`);
+
+      logger.info(`Closed SSE log stream for job ${jobId}`);
     });
 
   } catch (err: any) {
-    logger.error({ err: err.message }, `Failed to stream logs for job ${jobId}`);
-    res.write(`event: error\ndata: ${err.message}\n\n`);
-    res.end();
+    logger.error(
+      { err: err.message },
+      `Failed to stream logs for job ${jobId}`
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: 'Failed to stream logs',
+      });
+    } else {
+      res.write(`event: error\ndata: ${err.message}\n\n`);
+      res.end();
+    }
   }
 }
 
