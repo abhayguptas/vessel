@@ -257,6 +257,7 @@ export async function streamJobLogs(req: Request, res: Response): Promise<void> 
   res.flushHeaders();
 
   try {
+    const nc = getNatsConnection();
     const js = nc.jetstream();
     const jsm = await nc.jetstreamManager();
 
