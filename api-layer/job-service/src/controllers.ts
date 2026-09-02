@@ -257,16 +257,20 @@ export async function streamJobLogs(req: Request, res: Response): Promise<void> 
   res.flushHeaders();
 
   try {
-    const nc = getNatsConnection();
     const js = nc.jetstream();
+    const jsm = await nc.jetstreamManager();
 
-    // Create an ephemeral consumer for this specific job.
-    // DeliverPolicy.All replays existing log messages.
-    const consumer = await js.consumers.add('LOGS', {
+    // Create an ephemeral consumer for this specific job's logs.
+    const consumerInfo = await jsm.consumers.add('LOGS', {
       filter_subject: `logs.job.${jobId}`,
       deliver_policy: DeliverPolicy.All,
       ack_policy: AckPolicy.None,
     });
+
+    const consumer = await js.consumers.get(
+      'LOGS',
+      consumerInfo.name
+    );
 
     const messages = await consumer.consume();
 
