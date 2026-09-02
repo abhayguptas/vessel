@@ -71,7 +71,9 @@ export function startReconciliationLoop() {
 
     // Demo Mode Cleanup: delete completed/failed jobs older than 1 hour
     try {
-      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+      const oneHourAgo = new Date(
+       Date.now() - 60 * 60 * 1000
+      ).toISOString();
       const result = await db.execute(
         sql`DELETE FROM ${jobs} WHERE status IN ('completed', 'failed') AND updated_at < ${oneHourAgo}`
       );
