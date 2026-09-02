@@ -84,7 +84,7 @@ export default function Dashboard() {
     setSelectedJob(job);
     setJobLogs([]);
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('accessToken');
     if (!token) return;
 
     const eventSource = new EventSource(`${JOB_SERVICE_URL}/${job.id}/logs?token=${token}`);
