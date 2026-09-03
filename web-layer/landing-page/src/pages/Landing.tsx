@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { VesselLogo } from '../Logo';
 import { 
-  Activity, Box, Zap, 
+  Activity, Box, Zap, Database, Layers,
   ArrowRight, Code, LayoutDashboard, Settings, Key, Terminal
 } from 'lucide-react';
 
@@ -209,70 +209,69 @@ const TechnicalDepth = () => {
         </div>
 
         <div className="scroll-reveal delay-2" style={{
-          background: 'rgba(255,255,255,0.02)',
-          border: '1px solid var(--border-dark)',
-          borderRadius: '24px',
-          padding: '4rem',
-          position: 'relative'
+          background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%)',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          borderRadius: '32px',
+          padding: '4rem 2rem',
+          position: 'relative',
+          boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 20px 40px -10px rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '1rem',
+          flexWrap: 'wrap'
         }}>
-          {/* SVG Diagram with Animations */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto', height: '400px' }}>
-            
-            {/* Connection Lines */}
-            <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
-              <path 
-                d="M 150 100 L 400 100 L 400 200 L 650 200" 
-                fill="none" 
-                stroke="var(--border-dark)" 
-                strokeWidth="2" 
-              />
-              <path 
-                d="M 150 100 L 400 100 L 400 200 L 650 200" 
-                fill="none" 
-                stroke="var(--accent-primary)" 
-                strokeWidth="2" 
-                strokeDasharray="100"
-                style={{ animation: 'dash 3s linear infinite' }}
-              />
+          
+          {/* PostgreSQL Node */}
+          <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255,255,255,0.1)', padding: '1.5rem', borderRadius: '16px', textAlign: 'center', width: '160px', backdropFilter: 'blur(12px)', boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)' }}>
+            <Database size={28} color="#38bdf8" style={{ margin: '0 auto 1rem' }} />
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted-inverse)', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Durable State</div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white' }}>PostgreSQL</div>
+          </div>
 
-              <path 
-                d="M 150 300 L 400 300 L 400 200" 
-                fill="none" 
-                stroke="var(--border-dark)" 
-                strokeWidth="2" 
-              />
-              <path 
-                d="M 150 300 L 400 300 L 400 200" 
-                fill="none" 
-                stroke="#10b981" 
-                strokeWidth="2" 
-                strokeDasharray="100"
-                style={{ animation: 'dash 3s linear infinite 1.5s' }}
-              />
-            </svg>
+          {/* Animated Flow Arrow */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', opacity: 0.7 }}>
+             <div style={{ width: '40px', height: '2px', background: 'linear-gradient(90deg, rgba(56, 189, 248, 0.2) 0%, #38bdf8 100%)', borderRadius: '2px' }}></div>
+             <ArrowRight size={16} color="#38bdf8" />
+          </div>
 
-            {/* Nodes */}
-            <div style={{ position: 'absolute', top: '50px', left: '0', width: '150px', background: 'var(--bg-glass-dark)', border: '1px solid var(--border-dark)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', zIndex: 1, backdropFilter: 'blur(8px)' }}>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted-inverse)', marginBottom: '0.5rem', fontWeight: 600 }}>Durable State</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700 }}>PostgreSQL</div>
-            </div>
+          {/* Redis Node */}
+          <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255,255,255,0.1)', padding: '1.5rem', borderRadius: '16px', textAlign: 'center', width: '160px', backdropFilter: 'blur(12px)', boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)' }}>
+            <Layers size={28} color="#f43f5e" style={{ margin: '0 auto 1rem' }} />
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted-inverse)', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Priority Queue</div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white' }}>Redis ZSETs</div>
+          </div>
 
-            <div style={{ position: 'absolute', top: '250px', left: '0', width: '150px', background: 'var(--bg-glass-dark)', border: '1px solid var(--border-dark)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', zIndex: 1, backdropFilter: 'blur(8px)' }}>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted-inverse)', marginBottom: '0.5rem', fontWeight: 600 }}>Priority Queue</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700 }}>Redis ZSETs</div>
-            </div>
+          {/* Animated Flow Arrow */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', opacity: 0.7 }}>
+             <div style={{ width: '40px', height: '2px', background: 'linear-gradient(90deg, rgba(244, 63, 94, 0.2) 0%, #f43f5e 100%)', borderRadius: '2px' }}></div>
+             <ArrowRight size={16} color="#f43f5e" />
+          </div>
 
-            <div style={{ position: 'absolute', top: '150px', left: '325px', width: '150px', background: 'rgba(37, 99, 235, 0.1)', border: '1px solid var(--accent-primary)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', zIndex: 1, backdropFilter: 'blur(8px)' }}>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted-inverse)', marginBottom: '0.5rem', fontWeight: 600 }}>Orchestrator</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--accent-primary)' }}>Go Scheduler</div>
-            </div>
-
-            <div style={{ position: 'absolute', top: '150px', left: '650px', width: '150px', background: 'var(--bg-glass-dark)', border: '1px solid var(--border-dark)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', zIndex: 1, backdropFilter: 'blur(8px)' }}>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted-inverse)', marginBottom: '0.5rem', fontWeight: 600 }}>Execution</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700 }}>Docker Agents</div>
+          {/* Go Scheduler Node (Highlighted) */}
+          <div style={{ background: 'rgba(37, 99, 235, 0.1)', border: '1px solid #3b82f6', padding: '1.5rem', borderRadius: '16px', textAlign: 'center', width: '180px', backdropFilter: 'blur(12px)', boxShadow: '0 0 30px -5px rgba(59, 130, 246, 0.3)', position: 'relative' }}>
+            {/* Glowing orb behind */}
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80%', height: '80%', background: '#3b82f6', filter: 'blur(40px)', opacity: 0.2, zIndex: 0, animation: 'pulseOpacity 4s ease-in-out infinite' }}></div>
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <Zap size={28} color="#60a5fa" style={{ margin: '0 auto 1rem' }} />
+              <div style={{ fontSize: '0.8rem', color: '#93c5fd', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Orchestrator</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white' }}>Go Scheduler</div>
             </div>
           </div>
 
+          {/* Animated Flow Arrow */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', opacity: 0.7 }}>
+             <div style={{ width: '40px', height: '2px', background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.2) 0%, #60a5fa 100%)', borderRadius: '2px' }}></div>
+             <ArrowRight size={16} color="#60a5fa" />
+          </div>
+
+          {/* Docker Node */}
+          <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255,255,255,0.1)', padding: '1.5rem', borderRadius: '16px', textAlign: 'center', width: '160px', backdropFilter: 'blur(12px)', boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)' }}>
+            <Box size={28} color="#10b981" style={{ margin: '0 auto 1rem' }} />
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted-inverse)', marginBottom: '0.25rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Execution</div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white' }}>Docker Agents</div>
+          </div>
+          
         </div>
       </div>
     </section>
