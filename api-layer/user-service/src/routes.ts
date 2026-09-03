@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login, listApiKeys, generateApiKey } from './controllers.js';
+import { register, login, listApiKeys, generateApiKey, updateOrganization } from './controllers.js';
 import { requireAuth, requireRole } from './middlewares.js';
 
 export const router = Router();
@@ -12,6 +12,7 @@ router.post('/login', login);
 router.get('/me', requireAuth, (req: any, res) => {
   res.json({ user: req.user });
 });
+router.put('/org', requireAuth, updateOrganization);
 
 router.get('/apikeys', requireAuth, listApiKeys);
 router.post('/apikeys', requireAuth, generateApiKey);

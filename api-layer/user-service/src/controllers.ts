@@ -7,6 +7,30 @@ import { logger } from '@vessel/logger';
 import { eq } from 'drizzle-orm';
 import crypto from 'crypto';
 
+const updateOrgSchema = z.object({
+  organizationName: z.string().min(2),
+});
+
+export async function updateOrganization(req: any, res: Response): Promise<void> {
+  try {
+    const data = updateOrgSchema.parse(req.body);
+    const orgId = req.user.org;
+
+    await db.update(organizations)
+      .set({ name: data.organizationName, updatedAt: new Date() })
+      .where(eq(organizations.id, orgId));
+
+    res.json({ message: 'Organization updated successfully' });
+  } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ error: 'Invalid input', details: error.errors });
+      return;
+    }
+    logger.error(`Update org error: ${error.message}`);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),

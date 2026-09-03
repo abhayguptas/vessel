@@ -19,6 +19,9 @@ export default function Dashboard() {
 
   const [newKey, setNewKey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [orgName, setOrgName] = useState(user?.organizationName || '');
+  const [isSavingOrg, setIsSavingOrg] = useState(false);
+  const [orgSaveSuccess, setOrgSaveSuccess] = useState(false);
 
   const [stats, setStats] = useState({ total: 0, completed: 0, failed: 0, running: 0, queued: 0, successRate: 0 });
   const [activeWorkers, setActiveWorkers] = useState(0);
@@ -156,6 +159,35 @@ export default function Dashboard() {
       setTriggerError(e.message);
     } finally {
       setIsTriggering(false);
+    }
+  };
+
+  const handleSaveOrganization = async () => {
+    setIsSavingOrg(true);
+    setOrgSaveSuccess(false);
+    try {
+      const res = await fetchWithAuth(`${USER_SERVICE_URL}/org`, {
+        method: 'PUT',
+        body: JSON.stringify({ organizationName: orgName })
+      });
+      if (res.ok) {
+        setOrgSaveSuccess(true);
+        setTimeout(() => setOrgSaveSuccess(false), 3000);
+        
+        // Update user context (we have a hack to write directly to localStorage for immediate visual sync if AuthProvider doesn't have an update mechanism)
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const u = JSON.parse(storedUser);
+          u.organizationName = orgName;
+          localStorage.setItem('user', JSON.stringify(u));
+          // Note: Full reactive sync would require AuthContext expose setUser. 
+          // We can do a reload if needed, but since it's just settings, it's fine.
+        }
+      }
+    } catch (e: any) {
+      console.error(e);
+    } finally {
+      setIsSavingOrg(false);
     }
   };
 
@@ -532,14 +564,22 @@ export default function Dashboard() {
             <div style={{ background: 'var(--flup-card)', border: '1px solid var(--flup-border)', borderRadius: '8px', padding: '1.5rem' }}>
               <div style={{ marginBottom: '1.5rem' }}>
                 <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--flup-text-main)', fontWeight: 500 }}>Organization Name</label>
-                <input type="text" className="auth-input" style={{ width: '100%', background: '#f8fafc', border: '1px solid #e2e8f0', color: '#1e293b' }} defaultValue={user?.organizationName || 'User Organization'} />
+                <input 
+                  type="text" 
+                  className="auth-input" 
+                  style={{ width: '100%', background: '#f8fafc', border: '1px solid #e2e8f0', color: '#1e293b' }} 
+                  value={orgName} 
+                  onChange={(e) => setOrgName(e.target.value)} 
+                />
               </div>
-              <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--flup-text-main)', fontWeight: 500 }}>Contact Email</label>
-                <input type="email" className="auth-input" style={{ width: '100%', background: '#f8fafc', border: '1px solid #e2e8f0', color: '#1e293b' }} defaultValue={user?.email || ''} disabled />
-                <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem' }}>Contact email cannot be changed.</p>
-              </div>
-              <button className="flup-btn-primary" style={{ width: '100%', justifyContent: 'center' }}>Save Changes</button>
+              <button 
+                className="flup-btn-primary" 
+                style={{ width: '100%', justifyContent: 'center', position: 'relative' }}
+                onClick={handleSaveOrganization}
+                disabled={isSavingOrg}
+              >
+                {isSavingOrg ? 'Saving...' : orgSaveSuccess ? <><Check size={16} /> Saved Successfully</> : 'Save Changes'}
+              </button>
             </div>
           </div>
         )}
