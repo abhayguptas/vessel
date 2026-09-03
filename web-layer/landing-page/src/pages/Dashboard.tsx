@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Layers, Activity, LayoutDashboard, Key, Settings, CheckCircle, XCircle, Plus, TrendingUp, Users, Package, Map, Tag, LogOut as LogOutIcon, X } from 'lucide-react';
+import { Layers, Activity, LayoutDashboard, Key, Settings, CheckCircle, XCircle, Plus, TrendingUp, Package, LogOut as LogOutIcon, X } from 'lucide-react';
 import { VesselLogo } from '../Logo';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { useAuth } from '../AuthContext';
