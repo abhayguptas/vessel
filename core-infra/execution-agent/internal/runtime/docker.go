@@ -89,6 +89,13 @@ func (d *DockerRuntime) ExecuteJob(ctx context.Context, jobID string, img string
 			Memory:   int64(d.getEnvInt("WORKER_MEM_LIMIT_MB", 256)) * 1024 * 1024,
 			NanoCPUs: int64(d.getEnvFloat("WORKER_CPU_LIMIT", 0.5) * 1e9),
 		},
+		LogConfig: container.LogConfig{
+			Type: "json-file",
+			Config: map[string]string{
+				"max-size": "5m",
+				"max-file": "1",
+			},
+		},
 	}, nil, nil, fmt.Sprintf("vessel-job-%s", jobID))
 
 	if err != nil {

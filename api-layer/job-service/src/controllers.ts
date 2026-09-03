@@ -87,7 +87,7 @@ export function startReconciliationLoop() {
 const jobSubmitSchema = z.object({
   type: z.string().min(1),
   priority: z.enum(['high', 'normal', 'low']).default('normal'),
-  workloadId: z.enum(['hello-vessel', 'processing-demo', 'failure-demo']),
+  workloadId: z.enum(['hello-vessel', 'processing-demo', 'failure-demo', 'timeout-demo']),
 });
 
 const ALLOWED_WORKLOADS: Record<string, { image: string; cmd: string[] }> = {
@@ -102,6 +102,10 @@ const ALLOWED_WORKLOADS: Record<string, { image: string; cmd: string[] }> = {
   'failure-demo': {
     image: 'alpine:latest',
     cmd: ['sh', '-c', 'echo "Attempting dangerous operation..." && sleep 2 && echo "ERROR: Simulated failure occurred!" >&2 && exit 1'],
+  },
+  'timeout-demo': {
+    image: 'alpine:latest',
+    cmd: ['sh', '-c', 'echo "Starting infinite loop to test timeout..." && while true; do echo "Still running..."; sleep 2; done'],
   },
 };
 

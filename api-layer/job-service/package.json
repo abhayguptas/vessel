@@ -8,12 +8,13 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@types/ioredis": "^5.0.0",
     "@vessel/auth": "workspace:*",
     "@vessel/db-client": "workspace:*",
     "@vessel/logger": "workspace:*",
-    "@types/ioredis": "^5.0.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-rate-limit": "^8.7.0",
     "ioredis": "^6.0.0",
     "nats": "^2.29.3",
     "zod": "^3.22.4"
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/express-rate-limit": "^6.0.2",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   }

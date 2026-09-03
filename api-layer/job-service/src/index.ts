@@ -6,12 +6,21 @@ import { startReconciliationLoop } from './controllers.js';
 import { connectNATS, getNatsConnection } from './nats.js';
 import { db } from '@vessel/db-client';
 import { sql } from 'drizzle-orm';
+import rateLimit from 'express-rate-limit';
 
 const app = express();
 const PORT = process.env.JOB_SERVICE_PORT || 3002;
 
+// Rate limiting middleware
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 20, // limit each IP to 20 requests per windowMs
+  message: { error: 'Too many requests, please try again later.' }
+});
+
 app.use(cors());
 app.use(express.json());
+app.use(limiter); // Apply rate limiting to all requests
 
 app.use('/api/v1/jobs', jobRoutes);
 

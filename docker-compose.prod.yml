@@ -80,7 +80,7 @@ services:
       - REDIS_URL=redis://redis:6379
       - NATS_URL=nats://nats:4222
       - WORKER_NODE_ID=worker-prod-1
-      - WORKER_EXECUTION_TIMEOUT_SEC=300
+      - WORKER_EXECUTION_TIMEOUT_SEC=15
       - WORKER_MEM_LIMIT_MB=256
       - WORKER_CPU_LIMIT=0.5
     volumes:

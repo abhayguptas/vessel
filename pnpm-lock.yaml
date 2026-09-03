@@ -251,6 +251,9 @@ importers:
       express:
         specifier: ^4.18.2
         version: 4.22.2
+      express-rate-limit:
+        specifier: ^8.7.0
+        version: 8.7.0(express@4.22.2)
       ioredis:
         specifier: ^6.0.0
         version: 6.0.0
@@ -267,6 +270,9 @@ importers:
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.25
+      '@types/express-rate-limit':
+        specifier: ^6.0.2
+        version: 6.0.2(express@4.22.2)
       tsx:
         specifier: ^4.7.1
         version: 4.22.4
@@ -294,6 +300,9 @@ importers:
       express:
         specifier: ^4.18.2
         version: 4.22.2
+      express-rate-limit:
+        specifier: ^8.7.0
+        version: 8.7.0(express@4.22.2)
       zod:
         specifier: ^3.22.4
         version: 3.25.76
@@ -307,6 +316,9 @@ importers:
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.25
+      '@types/express-rate-limit':
+        specifier: ^6.0.2
+        version: 6.0.2(express@4.22.2)
       tsx:
         specifier: ^4.7.1
         version: 4.22.4
@@ -1241,6 +1253,10 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
+  '@types/express-rate-limit@6.0.2':
+    resolution: {integrity: sha512-e1xZLOOlxCDvplAGq7rDcXtbdBu2CWRsMjaIu1LVqGxWtKvwr884YE5mPs3IvHeG/OMDhf24oTaqG5T1bV3rBQ==}
+    deprecated: This is a stub types definition. express-rate-limit provides its own type definitions, so you do not need this installed.
+
   '@types/express-serve-static-core@4.19.8':
     resolution: {integrity: sha512-02S5fmqeoKzVZCHPZid4b8JH2eM5HzQLZWN2FohQEy/0eXTq8VXZfSN6Pcr3F6N9R/vNrj7cpgbhjie6m/1tCA==}
 
@@ -1808,6 +1824,12 @@ packages:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
     engines: {node: '>=0.8.x'}
 
+  express-rate-limit@8.7.0:
+    resolution: {integrity: sha512-hOwV7WOxXfjRpAM1DSJWZDXx3GhplwD8IfwuwvogD8i1Qnkgosw/H45s4ZnFAUHDAhPjlY9hLBvJhKmGMyY26g==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      express: '>= 4.11'
+
   express@4.22.2:
     resolution: {integrity: sha512-IuL+Elrou2ZvCFHs18/CIzy2Nzvo25nZ1/D2eIZlz7c+QUayAcYoiM2BthCjs+EBHVpjYjcuLDAiCWgeIX3X1Q==}
     engines: {node: '>= 0.10.0'}
@@ -1954,6 +1976,10 @@ packages:
   ioredis@6.0.0:
     resolution: {integrity: sha512-f+Dtubxfpf6KYFq7WVXJoOLn0bk4TJrMrN9SzeE+jrWrCWj7XX3fA6vkryafhADX+GMymRxgDJDOI33COkJc0w==}
     engines: {node: '>=20.0.0'}
+
+  ip-address@10.7.0:
+    resolution: {integrity: sha512-BGFsyJd5mpXp3rK6jIdADLNgpJUK1jnjzvYF8lK+VyDab9JAmqN0YOKDdP17HlgKb2+ehPgDc8EtnRLbGCAMhA==}
+    engines: {node: '>= 12'}
 
   ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
@@ -3214,6 +3240,13 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
+  '@types/express-rate-limit@6.0.2(express@4.22.2)':
+    dependencies:
+      express-rate-limit: 8.7.0(express@4.22.2)
+    transitivePeerDependencies:
+      - express
+      - supports-color
+
   '@types/express-serve-static-core@4.19.8':
     dependencies:
       '@types/node': 25.9.3
@@ -3780,6 +3813,14 @@ snapshots:
 
   events@3.3.0: {}
 
+  express-rate-limit@8.7.0(express@4.22.2):
+    dependencies:
+      debug: 4.4.3
+      express: 4.22.2
+      ip-address: 10.7.0
+    transitivePeerDependencies:
+      - supports-color
+
   express@4.22.2:
     dependencies:
       accepts: 1.3.8
@@ -3951,6 +3992,8 @@ snapshots:
       standard-as-callback: 2.1.0
     transitivePeerDependencies:
       - supports-color
+
+  ip-address@10.7.0: {}
 
   ipaddr.js@1.9.1: {}
 

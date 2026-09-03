@@ -4,12 +4,21 @@ import { logger } from '@vessel/logger';
 import { router as userRoutes } from './routes.js';
 import { db } from '@vessel/db-client';
 import { sql } from 'drizzle-orm';
+import rateLimit from 'express-rate-limit';
 
 const app = express();
 const PORT = process.env.USER_SERVICE_PORT || 3001;
 
+// Rate limiting middleware
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 20, // limit each IP to 20 requests per windowMs
+  message: { error: 'Too many requests, please try again later.' }
+});
+
 app.use(cors());
 app.use(express.json());
+app.use(limiter); // Apply rate limiting to all requests
 
 // Routes
 app.use('/api/v1/users', userRoutes);

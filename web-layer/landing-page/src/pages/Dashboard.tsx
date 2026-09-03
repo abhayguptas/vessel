@@ -109,6 +109,11 @@ export default function Dashboard() {
     setSelectedJob(null);
   };
 
+  useEffect(() => {
+    // Auto-collapse workload view if we move to another section
+    closeJobDetails();
+  }, [activeTab]);
+
   const handleGenerateKey = async () => {
     try {
       const res = await fetchWithAuth(`${USER_SERVICE_URL}/apikeys`, {
@@ -210,9 +215,6 @@ export default function Dashboard() {
         <div className={`flup-icon-btn ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}><LayoutDashboard size={20} /></div>
         <div className={`flup-icon-btn ${activeTab === 'jobs' ? 'active' : ''}`} onClick={() => setActiveTab('jobs')}><Activity size={20} /></div>
         <div className={`flup-icon-btn ${activeTab === 'api-keys' ? 'active' : ''}`} onClick={() => setActiveTab('api-keys')}><Key size={20} /></div>
-        <div className={`flup-icon-btn ${activeTab === 'map' ? 'active' : ''}`} onClick={() => setActiveTab('map')}><Map size={20} /></div>
-        <div className={`flup-icon-btn ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}><Users size={20} /></div>
-        <div className={`flup-icon-btn ${activeTab === 'tags' ? 'active' : ''}`} onClick={() => setActiveTab('tags')}><Tag size={20} /></div>
         
         <div style={{ flex: 1 }} />
         <div className={`flup-icon-btn ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}><Settings size={20} /></div>
@@ -240,7 +242,7 @@ export default function Dashboard() {
 
         <div className="flup-nav-group">
           <div className="flup-nav-label">System</div>
-          <button className="flup-nav-item">
+          <button className={`flup-nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>
             <Settings size={18} /> Settings
           </button>
         </div>
@@ -514,8 +516,20 @@ export default function Dashboard() {
             </div>
           </>
         ) : (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#64748b' }}>
-            Settings placeholder
+          <div style={{ padding: '2rem', maxWidth: '600px' }}>
+            <h2 style={{ color: 'var(--flup-text-main)', marginBottom: '1.5rem', fontWeight: 600 }}>Organization Settings</h2>
+            <div style={{ background: 'var(--flup-card)', border: '1px solid var(--flup-border)', borderRadius: '8px', padding: '1.5rem' }}>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--flup-text-main)', fontWeight: 500 }}>Organization Name</label>
+                <input type="text" className="auth-input" style={{ width: '100%', background: '#f8fafc', border: '1px solid #e2e8f0', color: '#1e293b' }} defaultValue={user?.organizationName || 'User Organization'} />
+              </div>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--flup-text-main)', fontWeight: 500 }}>Contact Email</label>
+                <input type="email" className="auth-input" style={{ width: '100%', background: '#f8fafc', border: '1px solid #e2e8f0', color: '#1e293b' }} defaultValue={user?.email || ''} disabled />
+                <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem' }}>Contact email cannot be changed.</p>
+              </div>
+              <button className="flup-btn-primary" style={{ width: '100%', justifyContent: 'center' }}>Save Changes</button>
+            </div>
           </div>
         )}
       </main>
@@ -557,7 +571,7 @@ export default function Dashboard() {
       {selectedJob && (
         <div style={{
           position: 'fixed', top: 0, right: 0, bottom: 0, width: '600px',
-          background: 'var(--flup-bg-card)', borderLeft: '1px solid var(--flup-border)',
+          background: 'var(--flup-card)', borderLeft: '1px solid var(--flup-border)',
           boxShadow: '-4px 0 24px rgba(0,0,0,0.05)', zIndex: 1000, display: 'flex', flexDirection: 'column',
           animation: 'slideInRight 0.3s ease-out'
         }}>

@@ -8,18 +8,20 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "zod": "^3.22.4",
+    "@vessel/auth": "workspace:*",
+    "@vessel/db-client": "workspace:*",
+    "@vessel/logger": "workspace:*",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "@vessel/db-client": "workspace:*",
-    "@vessel/auth": "workspace:*",
-    "@vessel/logger": "workspace:*"
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.7.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/cors": "^2.8.17",
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/express-rate-limit": "^6.0.2",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   }
