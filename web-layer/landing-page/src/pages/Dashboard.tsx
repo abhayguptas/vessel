@@ -6,7 +6,7 @@ import { useAuth } from '../AuthContext';
 import { USER_SERVICE_URL, JOB_SERVICE_URL, fetchWithAuth } from '../api';
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   
   const [jobs, setJobs] = useState<any[]>([]);
@@ -174,15 +174,8 @@ export default function Dashboard() {
         setOrgSaveSuccess(true);
         setTimeout(() => setOrgSaveSuccess(false), 3000);
         
-        // Update user context (we have a hack to write directly to localStorage for immediate visual sync if AuthProvider doesn't have an update mechanism)
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          const u = JSON.parse(storedUser);
-          u.organizationName = orgName;
-          localStorage.setItem('user', JSON.stringify(u));
-          // Note: Full reactive sync would require AuthContext expose setUser. 
-          // We can do a reload if needed, but since it's just settings, it's fine.
-        }
+        // Update user context using AuthProvider's new method
+        updateUser({ organizationName: orgName });
       }
     } catch (e: any) {
       console.error(e);
@@ -560,27 +553,50 @@ export default function Dashboard() {
           </>
         ) : (
           <div style={{ padding: '2rem', maxWidth: '600px' }}>
-            <h2 style={{ color: 'var(--flup-text-main)', marginBottom: '1.5rem', fontWeight: 600 }}>Organization Settings</h2>
-            <div style={{ background: 'var(--flup-card)', border: '1px solid var(--flup-border)', borderRadius: '8px', padding: '1.5rem' }}>
-              <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--flup-text-main)', fontWeight: 500 }}>Organization Name</label>
-                <input 
-                  type="text" 
-                  className="auth-input" 
-                  style={{ width: '100%', background: '#f8fafc', border: '1px solid #e2e8f0', color: '#1e293b' }} 
-                  value={orgName} 
-                  onChange={(e) => setOrgName(e.target.value)} 
-                />
+            <header className="flup-header" style={{ marginBottom: '2rem', padding: 0 }}>
+              <h1 style={{ fontSize: '1.8rem' }}>Settings</h1>
+            </header>
+
+            <section style={{ marginBottom: '3rem' }}>
+              <h2 style={{ color: 'var(--flup-text-main)', marginBottom: '1rem', fontWeight: 600, fontSize: '1.2rem' }}>User Profile</h2>
+              <div style={{ background: 'var(--flup-card)', border: '1px solid var(--flup-border)', borderRadius: '8px', padding: '1.5rem' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--flup-text-main)', fontWeight: 500 }}>Email Address</label>
+                  <input 
+                    type="email" 
+                    className="auth-input" 
+                    style={{ width: '100%', background: '#f8fafc', border: '1px solid #e2e8f0', color: '#64748b', cursor: 'not-allowed' }} 
+                    value={user?.email || ''} 
+                    disabled
+                  />
+                  <p style={{ fontSize: '0.8rem', color: 'var(--flup-text-muted)', marginTop: '0.5rem' }}>Email cannot be changed at this time.</p>
+                </div>
               </div>
-              <button 
-                className="flup-btn-primary" 
-                style={{ width: '100%', justifyContent: 'center', position: 'relative' }}
-                onClick={handleSaveOrganization}
-                disabled={isSavingOrg}
-              >
-                {isSavingOrg ? 'Saving...' : orgSaveSuccess ? <><Check size={16} /> Saved Successfully</> : 'Save Changes'}
-              </button>
-            </div>
+            </section>
+
+            <section>
+              <h2 style={{ color: 'var(--flup-text-main)', marginBottom: '1rem', fontWeight: 600, fontSize: '1.2rem' }}>Organization Profile</h2>
+              <div style={{ background: 'var(--flup-card)', border: '1px solid var(--flup-border)', borderRadius: '8px', padding: '1.5rem' }}>
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--flup-text-main)', fontWeight: 500 }}>Organization Name</label>
+                  <input 
+                    type="text" 
+                    className="auth-input" 
+                    style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', color: '#1e293b' }} 
+                    value={orgName} 
+                    onChange={(e) => setOrgName(e.target.value)} 
+                  />
+                </div>
+                <button 
+                  className="flup-btn-primary" 
+                  style={{ width: '100%', justifyContent: 'center', position: 'relative' }}
+                  onClick={handleSaveOrganization}
+                  disabled={isSavingOrg}
+                >
+                  {isSavingOrg ? 'Saving...' : orgSaveSuccess ? <><Check size={16} /> Saved Successfully</> : 'Save Changes'}
+                </button>
+              </div>
+            </section>
           </div>
         )}
       </main>

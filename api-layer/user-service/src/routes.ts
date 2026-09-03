@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login, listApiKeys, generateApiKey, updateOrganization } from './controllers.js';
+import { register, login, listApiKeys, generateApiKey, updateOrganization, getMe } from './controllers.js';
 import { requireAuth, requireRole } from './middlewares.js';
 
 export const router = Router();
@@ -9,9 +9,7 @@ router.post('/register', register);
 router.post('/login', login);
 
 // Protected routes
-router.get('/me', requireAuth, (req: any, res) => {
-  res.json({ user: req.user });
-});
+router.get('/me', requireAuth, getMe);
 router.put('/org', requireAuth, updateOrganization);
 
 router.get('/apikeys', requireAuth, listApiKeys);

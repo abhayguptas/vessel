@@ -11,6 +11,34 @@ const updateOrgSchema = z.object({
   organizationName: z.string().min(2),
 });
 
+export async function getMe(req: any, res: Response): Promise<void> {
+  try {
+    const userId = req.user.sub;
+    const orgId = req.user.org;
+
+    const [user] = await db.select({ email: users.email }).from(users).where(eq(users.id, userId));
+    const [org] = await db.select({ name: organizations.name }).from(organizations).where(eq(organizations.id, orgId));
+
+    if (!user || !org) {
+      res.status(404).json({ error: 'User or organization not found' });
+      return;
+    }
+
+    res.json({ 
+      user: {
+        id: userId,
+        email: user.email,
+        role: req.user.role,
+        organizationId: orgId,
+        organizationName: org.name
+      } 
+    });
+  } catch (error) {
+    logger.error(`Error in getMe: ${error}`);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 export async function updateOrganization(req: any, res: Response): Promise<void> {
   try {
     const data = updateOrgSchema.parse(req.body);

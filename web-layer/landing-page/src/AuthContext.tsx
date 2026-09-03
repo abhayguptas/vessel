@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { USER_SERVICE_URL } from './api';
 
 interface User {
   id: string;
@@ -12,6 +13,7 @@ interface AuthContextType {
   user: User | null;
   login: (token: string, userData: User) => void;
   logout: () => void;
+  updateUser: (userData: Partial<User>) => void;
   isAuthenticated: boolean;
 }
 
@@ -23,10 +25,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     const storedUser = localStorage.getItem('user');
-    if (token && storedUser) {
-      setUser(JSON.parse(storedUser));
+    
+    if (token) {
+      if (storedUser) setUser(JSON.parse(storedUser));
+      
+      // Fetch fresh user data in background
+      fetch(`${USER_SERVICE_URL}/me`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUser(data.user);
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+      })
+      .catch(console.error);
     }
   }, []);
+
+  const updateUser = (userData: Partial<User>) => {
+    if (user) {
+      const updated = { ...user, ...userData };
+      setUser(updated);
+      localStorage.setItem('user', JSON.stringify(updated));
+    }
+  };
 
   const login = (token: string, userData: User) => {
     localStorage.setItem('accessToken', token);
@@ -41,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );
