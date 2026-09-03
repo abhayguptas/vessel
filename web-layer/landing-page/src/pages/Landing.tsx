@@ -96,7 +96,7 @@ const Hero = () => {
         </h1>
         
         <p className="scroll-reveal delay-2 text-muted" style={{ fontSize: '1.25rem', maxWidth: '600px', margin: '0 auto 3rem', lineHeight: 1.6 }}>
-          Manage isolated containers, track execution, and optimize operations—all from one intuitive distributed platform.
+          Manage isolated containers, track execution, and optimize operations. All from one intuitive distributed platform.
         </p>
         
         <div className="scroll-reveal delay-3" style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
@@ -318,7 +318,7 @@ const Features = () => {
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
           
-          <div className="scroll-reveal" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
+          <div className="scroll-reveal feature-card" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
             <div style={{ background: 'var(--accent-light)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <Box size={24} color="var(--accent-primary)" />
             </div>
@@ -326,7 +326,7 @@ const Features = () => {
             <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>Every workload runs in its own ephemeral Docker container, ensuring complete isolation and precise resource control.</p>
           </div>
           
-          <div className="scroll-reveal delay-1" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
+          <div className="scroll-reveal delay-1 feature-card" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
             <div style={{ background: 'var(--accent-light)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <Zap size={24} color="var(--accent-primary)" />
             </div>
@@ -334,7 +334,7 @@ const Features = () => {
             <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>Sort critical workloads into high-priority lanes automatically using Redis-backed sorted sets for millisecond latency.</p>
           </div>
 
-          <div className="scroll-reveal delay-2" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
+          <div className="scroll-reveal delay-2 feature-card" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
             <div style={{ background: 'var(--accent-light)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <Activity size={24} color="var(--accent-primary)" />
             </div>
