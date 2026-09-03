@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { VesselLogo } from '../Logo';
 import { 
   Activity, Box, Zap, 
-  CheckCircle, ArrowRight
+  ArrowRight, Code
 } from 'lucide-react';
 
 /* --- Animations Observer Hook --- */
@@ -49,8 +49,11 @@ const Navbar = () => {
       </div>
       <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
         <a href="#features" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500 }}>Features</a>
-        <a href="#pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500 }}>Pricing</a>
+        <a href="#architecture" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500 }}>Architecture</a>
         <Link to="/docs" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500 }}>Docs</Link>
+        <a href="https://github.com/abhayguptas/vessel/tree/main" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 600 }}>
+          <Code size={18} /> GitHub
+        </a>
         <Link to="/login" style={{ color: 'var(--text-main)', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 600 }}>Sign In</Link>
         <Link to="/register" className="btn-primary" style={{ padding: '8px 20px', fontSize: '0.95rem' }}>Get Started</Link>
       </div>
@@ -72,9 +75,9 @@ const Hero = () => {
       background: 'var(--bg-main)'
     }}>
       <div style={{ zIndex: 1, textAlign: 'center', maxWidth: '900px' }}>
-        <div className="scroll-reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--bg-sand)', padding: '6px 16px', borderRadius: '24px', border: '1px solid var(--border-light)', color: 'var(--text-main)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '2rem', boxShadow: 'var(--shadow-sm)' }}>
-          <Activity size={16} color="var(--accent-primary)" /> Optimize Execution by 10x
-        </div>
+        <a href="https://github.com/abhayguptas/vessel/tree/main" target="_blank" rel="noopener noreferrer" className="scroll-reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--bg-sand)', padding: '6px 16px', borderRadius: '24px', border: '1px solid var(--border-light)', color: 'var(--text-main)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '2rem', boxShadow: 'var(--shadow-sm)', textDecoration: 'none' }}>
+          <Code size={16} /> Open Source on GitHub <ArrowRight size={14} style={{ color: 'var(--text-muted)' }} />
+        </a>
         
         <h1 className="scroll-reveal delay-1" style={{ fontSize: 'clamp(3.5rem, 7vw, 5.5rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '1.5rem', color: 'var(--text-main)' }}>
           Streamline Workloads <br/>
@@ -91,7 +94,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Hero Visual: Dashboard Mockup */}
+      {/* Hero Visual: Dashboard Mockup with Data Animation */}
       <div className="scroll-reveal delay-3" style={{ marginTop: '5rem', zIndex: 1, width: '100%', maxWidth: '1100px', position: 'relative' }}>
         <div style={{
           background: 'var(--bg-main)',
@@ -104,41 +107,139 @@ const Hero = () => {
           alignItems: 'center',
           overflow: 'hidden'
         }}>
-          {/* A mock UI resembling the dashboard */}
-          <div style={{ width: '100%', height: '500px', background: 'var(--bg-sand)', borderRadius: '16px', display: 'flex' }}>
+          {/* Animated Mock UI */}
+          <div style={{ width: '100%', height: '500px', background: 'var(--bg-sand)', borderRadius: '16px', display: 'flex', overflow: 'hidden' }}>
+            {/* Sidebar */}
             <div style={{ width: '240px', background: 'white', borderRight: '1px solid var(--border-light)', padding: '2rem 1rem' }}>
               <div style={{ height: '32px', width: '120px', background: '#e2e8f0', borderRadius: '6px', marginBottom: '3rem' }}></div>
               <div style={{ height: '24px', width: '80%', background: 'var(--accent-light)', borderRadius: '6px', marginBottom: '1rem' }}></div>
               <div style={{ height: '24px', width: '70%', background: '#f1f5f9', borderRadius: '6px', marginBottom: '1rem' }}></div>
               <div style={{ height: '24px', width: '90%', background: '#f1f5f9', borderRadius: '6px', marginBottom: '1rem' }}></div>
             </div>
-            <div style={{ flex: 1, padding: '2rem' }}>
-              <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem' }}>
+            {/* Main Area */}
+            <div style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              
+              {/* Stats Row */}
+              <div style={{ display: 'flex', gap: '2rem' }}>
                 <div style={{ flex: 1, background: 'white', height: '120px', borderRadius: '12px', border: '1px solid var(--border-light)', padding: '1.5rem', boxShadow: 'var(--shadow-sm)' }}>
-                  <div style={{ height: '16px', width: '40%', background: '#f1f5f9', borderRadius: '4px', marginBottom: '1rem' }}></div>
-                  <div style={{ height: '32px', width: '60%', background: '#e2e8f0', borderRadius: '4px' }}></div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 600 }}>Active Workers</div>
+                  <div style={{ fontSize: '2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    12 <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#10b981', animation: 'pulseOpacity 2s infinite' }}></div>
+                  </div>
                 </div>
                 <div style={{ flex: 1, background: 'white', height: '120px', borderRadius: '12px', border: '1px solid var(--border-light)', padding: '1.5rem', boxShadow: 'var(--shadow-sm)' }}>
-                  <div style={{ height: '16px', width: '40%', background: '#f1f5f9', borderRadius: '4px', marginBottom: '1rem' }}></div>
-                  <div style={{ height: '32px', width: '60%', background: '#e2e8f0', borderRadius: '4px' }}></div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 600 }}>Jobs Processed</div>
+                  <div style={{ fontSize: '2rem', fontWeight: 700 }}>4,892</div>
                 </div>
                 <div style={{ flex: 1, background: 'white', height: '120px', borderRadius: '12px', border: '1px solid var(--border-light)', padding: '1.5rem', boxShadow: 'var(--shadow-sm)' }}>
-                  <div style={{ height: '16px', width: '40%', background: '#f1f5f9', borderRadius: '4px', marginBottom: '1rem' }}></div>
-                  <div style={{ height: '32px', width: '60%', background: '#e2e8f0', borderRadius: '4px' }}></div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 600 }}>Success Rate</div>
+                  <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent-primary)' }}>99.9%</div>
                 </div>
               </div>
-              <div style={{ background: 'white', height: '200px', borderRadius: '12px', border: '1px solid var(--border-light)', padding: '1.5rem', boxShadow: 'var(--shadow-sm)' }}>
-                <div style={{ height: '16px', width: '20%', background: '#f1f5f9', borderRadius: '4px', marginBottom: '2rem' }}></div>
-                <div style={{ display: 'flex', alignItems: 'flex-end', height: '120px', gap: '1rem' }}>
-                  <div style={{ flex: 1, background: 'var(--accent-primary)', height: '60%', borderRadius: '4px 4px 0 0' }}></div>
-                  <div style={{ flex: 1, background: 'var(--accent-primary)', height: '80%', borderRadius: '4px 4px 0 0' }}></div>
-                  <div style={{ flex: 1, background: 'var(--accent-primary)', height: '40%', borderRadius: '4px 4px 0 0' }}></div>
-                  <div style={{ flex: 1, background: 'var(--accent-primary)', height: '100%', borderRadius: '4px 4px 0 0' }}></div>
-                  <div style={{ flex: 1, background: 'var(--accent-primary)', height: '70%', borderRadius: '4px 4px 0 0' }}></div>
+
+              {/* Live Jobs Stream */}
+              <div style={{ background: 'white', flex: 1, borderRadius: '12px', border: '1px solid var(--border-light)', padding: '1.5rem', boxShadow: 'var(--shadow-sm)', overflow: 'hidden', position: 'relative' }}>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-main)', marginBottom: '1rem', fontWeight: 600 }}>Live Execution Stream</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'absolute', width: 'calc(100% - 3rem)', animation: 'scrollUp 15s linear infinite' }}>
+                  {/* Repeated mock job rows for scrolling effect */}
+                  {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <div key={i} style={{ border: '1px solid var(--border-light)', borderRadius: '8px', padding: '12px', background: '#f8fafc' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.85rem' }}>
+                        <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>job_x{Math.floor(Math.random() * 90000)}</span>
+                        <span style={{ color: '#10b981', fontWeight: 500 }}>Completed</span>
+                      </div>
+                      <div style={{ width: '100%', background: '#e2e8f0', height: '4px', borderRadius: '2px', overflow: 'hidden' }}>
+                        <div style={{ width: '100%', background: '#10b981', height: '100%', animation: 'progress 3s ease-out infinite' }}></div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
+
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const TechnicalDepth = () => {
+  return (
+    <section id="architecture" className="dark-section" style={{ padding: '8rem 2rem', background: 'var(--bg-dark)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+      <div className="container">
+        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+          <h2 className="scroll-reveal" style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '1rem', color: 'white' }}>Enterprise-Grade Architecture</h2>
+          <p className="scroll-reveal delay-1" style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto', color: 'var(--text-muted-inverse)' }}>
+            Vessel is built on serious infrastructure. A decoupled, distributed pipeline designed for maximum resilience and scale.
+          </p>
+        </div>
+
+        <div className="scroll-reveal delay-2" style={{
+          background: 'rgba(255,255,255,0.02)',
+          border: '1px solid var(--border-dark)',
+          borderRadius: '24px',
+          padding: '4rem',
+          position: 'relative'
+        }}>
+          {/* SVG Diagram with Animations */}
+          <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto', height: '400px' }}>
+            
+            {/* Connection Lines */}
+            <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+              <path 
+                d="M 150 100 L 400 100 L 400 200 L 650 200" 
+                fill="none" 
+                stroke="var(--border-dark)" 
+                strokeWidth="2" 
+              />
+              <path 
+                d="M 150 100 L 400 100 L 400 200 L 650 200" 
+                fill="none" 
+                stroke="var(--accent-primary)" 
+                strokeWidth="2" 
+                strokeDasharray="100"
+                style={{ animation: 'dash 3s linear infinite' }}
+              />
+
+              <path 
+                d="M 150 300 L 400 300 L 400 200" 
+                fill="none" 
+                stroke="var(--border-dark)" 
+                strokeWidth="2" 
+              />
+              <path 
+                d="M 150 300 L 400 300 L 400 200" 
+                fill="none" 
+                stroke="#10b981" 
+                strokeWidth="2" 
+                strokeDasharray="100"
+                style={{ animation: 'dash 3s linear infinite 1.5s' }}
+              />
+            </svg>
+
+            {/* Nodes */}
+            <div style={{ position: 'absolute', top: '50px', left: '0', width: '150px', background: 'var(--bg-glass-dark)', border: '1px solid var(--border-dark)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', zIndex: 1, backdropFilter: 'blur(8px)' }}>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted-inverse)', marginBottom: '0.5rem', fontWeight: 600 }}>Durable State</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700 }}>PostgreSQL</div>
+            </div>
+
+            <div style={{ position: 'absolute', top: '250px', left: '0', width: '150px', background: 'var(--bg-glass-dark)', border: '1px solid var(--border-dark)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', zIndex: 1, backdropFilter: 'blur(8px)' }}>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted-inverse)', marginBottom: '0.5rem', fontWeight: 600 }}>Priority Queue</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700 }}>Redis ZSETs</div>
+            </div>
+
+            <div style={{ position: 'absolute', top: '150px', left: '325px', width: '150px', background: 'rgba(37, 99, 235, 0.1)', border: '1px solid var(--accent-primary)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', zIndex: 1, backdropFilter: 'blur(8px)' }}>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted-inverse)', marginBottom: '0.5rem', fontWeight: 600 }}>Orchestrator</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--accent-primary)' }}>Go Scheduler</div>
+            </div>
+
+            <div style={{ position: 'absolute', top: '150px', left: '650px', width: '150px', background: 'var(--bg-glass-dark)', border: '1px solid var(--border-dark)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', zIndex: 1, backdropFilter: 'blur(8px)' }}>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted-inverse)', marginBottom: '0.5rem', fontWeight: 600 }}>Execution</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700 }}>Docker Agents</div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -215,66 +316,6 @@ const Features = () => {
   );
 };
 
-const Pricing = () => {
-  return (
-    <section id="pricing" style={{ padding: '8rem 2rem', background: 'var(--bg-main)' }}>
-      <div className="container">
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-          <h2 className="scroll-reveal" style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '1rem' }}>Flexible Pricing Plans</h2>
-          <p className="scroll-reveal delay-1 text-muted" style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-            Choose the perfect plan for your infrastructure—whether you're just starting out or managing millions of jobs.
-          </p>
-        </div>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', maxWidth: '1100px', margin: '0 auto', alignItems: 'center' }}>
-          {/* Basic Tier */}
-          <div className="scroll-reveal" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '3rem 2rem', boxShadow: 'var(--shadow-sm)' }}>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '0.5rem' }}>Developer Plan</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>Simple execution for hobbyists.</p>
-            <div style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '2rem' }}>$0 <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontWeight: 500 }}>/month</span></div>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', fontSize: '0.95rem' }}>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--accent-primary)" /> Up to 1,000 jobs/mo</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--accent-primary)" /> Shared worker pool</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--accent-primary)" /> Basic execution insights</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--accent-primary)" /> Community support</li>
-            </ul>
-            <Link to="/register" className="btn-secondary" style={{ width: '100%', justifyContent: 'center', padding: '14px', borderRadius: '8px' }}>Get Started</Link>
-          </div>
-
-          {/* Pro Tier (Highlighted) */}
-          <div className="scroll-reveal delay-1" style={{ background: 'var(--bg-main)', border: '2px solid var(--accent-primary)', borderRadius: '24px', padding: '3.5rem 2.5rem', boxShadow: 'var(--shadow-xl)', position: 'relative', transform: 'scale(1.05)' }}>
-            <div style={{ position: 'absolute', top: '-14px', left: '50%', transform: 'translateX(-50%)', background: 'var(--accent-primary)', color: 'white', padding: '6px 16px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em' }}>MOST POPULAR</div>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '0.5rem' }}>Pro Plan</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>Automation for growing startups.</p>
-            <div style={{ fontSize: '3.5rem', fontWeight: 700, marginBottom: '2rem' }}>$69 <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontWeight: 500 }}>/month</span></div>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', fontSize: '0.95rem' }}>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--accent-primary)" /> Up to 50,000 jobs/mo</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--accent-primary)" /> Priority queuing</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--accent-primary)" /> Real-time log streaming</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--accent-primary)" /> Priority email support</li>
-            </ul>
-            <button className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '14px', borderRadius: '8px' }}>Start Free Trial</button>
-          </div>
-
-          {/* Enterprise Tier */}
-          <div className="scroll-reveal delay-2" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '24px', padding: '3rem 2rem', boxShadow: 'var(--shadow-sm)' }}>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '0.5rem' }}>Enterprise Plan</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>Full control for large teams.</p>
-            <div style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '2rem' }}>$199 <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontWeight: 500 }}>/month</span></div>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem', fontSize: '0.95rem' }}>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--text-main)" /> Unlimited execution limits</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--text-main)" /> Dedicated worker clusters</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--text-main)" /> VPC Peering</li>
-              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><CheckCircle size={18} color="var(--text-main)" /> 24/7 dedicated support</li>
-            </ul>
-            <a href="#" className="btn-secondary" style={{ width: '100%', justifyContent: 'center', padding: '14px', borderRadius: '8px' }}>Contact Sales</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const Footer = () => {
   return (
     <footer style={{ padding: '4rem 2rem 2rem', background: 'var(--bg-sand)' }}>
@@ -290,15 +331,18 @@ const Footer = () => {
           {/* Top Callout */}
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '2rem', marginBottom: '4rem', paddingBottom: '4rem', borderBottom: '1px solid var(--border-light)' }}>
             <div>
-              <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 600 }}>Become an Early Adopter</div>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '1rem' }}>Join our Beta Program</h2>
+              <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 600 }}>Open Source Engine</div>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '1rem' }}>Ready to deploy?</h2>
               <p style={{ color: 'var(--text-muted)', maxWidth: '400px', lineHeight: 1.6 }}>
-                Get exclusive access to dedicated clusters and shape the future of distributed execution with us.
+                Self-host the execution engine or try the managed platform.
               </p>
             </div>
-            <div>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <a href="https://github.com/abhayguptas/vessel/tree/main" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '32px' }}>
+                <Code size={18} /> View on GitHub
+              </a>
               <Link to="/register" className="btn-primary" style={{ padding: '16px 32px', fontSize: '1.1rem', borderRadius: '32px' }}>
-                Join the beta <ArrowRight size={18} />
+                Get Started <ArrowRight size={18} />
               </Link>
             </div>
           </div>
@@ -317,14 +361,14 @@ const Footer = () => {
             
             <div style={{ display: 'flex', gap: '4rem', flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <strong style={{ fontSize: '1rem', color: 'var(--text-main)', marginBottom: '0.5rem' }}>Company</strong>
-                <a href="#pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Pricing</a>
-                <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Contact Us</a>
-                <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Become an Affiliate <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '4px' }}/></a>
+                <strong style={{ fontSize: '1rem', color: 'var(--text-main)', marginBottom: '0.5rem' }}>Project</strong>
+                <a href="#features" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Features</a>
+                <a href="#architecture" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Architecture</a>
+                <Link to="/docs" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Documentation</Link>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <strong style={{ fontSize: '1rem', color: 'var(--text-main)', marginBottom: '0.5rem' }}>Socials</strong>
-                <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>GitHub <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '4px' }}/></a>
+                <a href="https://github.com/abhayguptas/vessel/tree/main" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>GitHub <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '4px' }}/></a>
                 <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Twitter/X <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '4px' }}/></a>
                 <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.95rem' }}>Discord <ArrowRight size={14} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '4px' }}/></a>
               </div>
@@ -348,10 +392,10 @@ const Footer = () => {
             </div>
           </div>
           
-          <div style={{ borderTop: '1px solid var(--border-light)', marginTop: '4rem', paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-            <p>© 2026 Vessel Inc. All rights reserved. • Made with Vessel</p>
+          <div style={{ borderTop: '1px solid var(--border-light)', marginTop: '4rem', paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: 'var(--text-muted)', flexWrap: 'wrap', gap: '1rem' }}>
+            <p>© 2026 Vessel Inc. All rights reserved.</p>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              <span>Built in React</span>
+              <a href="https://abhayakg.me" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 600 }}>Built by Abhay Gupta</a>
             </div>
           </div>
 
@@ -370,8 +414,8 @@ export default function Landing() {
       <main>
         <Hero />
         <StatsSection />
+        <TechnicalDepth />
         <Features />
-        <Pricing />
       </main>
       <Footer />
     </div>
