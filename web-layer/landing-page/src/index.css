@@ -1,25 +1,37 @@
 :root {
-  /* Coastal Palette */
-  --bg-sand: #FAF9F6;
-  --bg-dark: #0A1128;
-  --bg-glass: rgba(10, 17, 40, 0.03);
-  --bg-glass-dark: rgba(250, 249, 246, 0.05);
+  /* Premium SaaS Palette */
+  --bg-main: #ffffff;
+  --bg-sand: #f8fafc; /* Very light gray/blue tint for sections */
+  --bg-dark: #0f172a;
   
-  --text-main: #0A1128;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-dark: rgba(15, 23, 42, 0.6);
+  
+  --text-main: #0f172a;
   --text-muted: #64748b;
-  --text-main-inverse: #FAF9F6;
-  --text-muted-inverse: #94A3B8;
+  --text-main-inverse: #ffffff;
+  --text-muted-inverse: #94a3b8;
   
-  --accent-orange: #EA580C;
-  --accent-teal: #0D9488;
-  --accent-blue: #0284C7;
+  --accent-primary: #2563EB; /* Vibrant Blue */
+  --accent-primary-hover: #1D4ED8;
+  --accent-light: #eff6ff;
   
-  --border-light: rgba(10, 17, 40, 0.08);
-  --border-dark: rgba(250, 249, 246, 0.1);
+  --border-light: #e2e8f0;
+  --border-dark: rgba(255, 255, 255, 0.1);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 
   font-family: 'Inter', sans-serif;
   color: var(--text-main);
-  background-color: var(--bg-sand);
+  background-color: var(--bg-main);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -95,38 +107,40 @@ code, pre {
 }
 
 .btn-primary {
-  background: var(--accent-orange);
+  background: var(--accent-primary);
   color: white;
   border: none;
-  padding: 10px 24px;
-  border-radius: 6px;
+  padding: 12px 28px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
-  background: #c2410c;
+  background: var(--accent-primary-hover);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-secondary {
   background: transparent;
   color: var(--text-main);
   border: 1px solid var(--border-light);
-  padding: 10px 24px;
-  border-radius: 6px;
+  padding: 12px 28px;
+  border-radius: var(--radius-sm);
   font-weight: 500;
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -134,8 +148,8 @@ code, pre {
 }
 
 .btn-secondary:hover {
-  background: rgba(10, 17, 40, 0.04);
-  border-color: rgba(10, 17, 40, 0.15);
+  background: var(--bg-sand);
+  border-color: #cbd5e1;
 }
 
 .dark-section .btn-secondary {
@@ -145,7 +159,7 @@ code, pre {
 
 .dark-section .btn-secondary:hover {
   background: var(--bg-glass-dark);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Auth Layout (reused for Login/Register) */
@@ -295,12 +309,12 @@ code, pre {
 .light-dashboard {
   --flup-bg: var(--bg-sand);
   --flup-card: #ffffff;
-  --flup-sidebar-primary: #F5F5F4;
+  --flup-sidebar-primary: #ffffff;
   --flup-text-main: var(--text-main);
   --flup-text-muted: var(--text-muted);
-  --flup-accent: var(--accent-teal);
-  --flup-accent-light: #CCFBF1;
-  --flup-border: #e2e8f0;
+  --flup-accent: var(--accent-primary);
+  --flup-accent-light: var(--accent-light);
+  --flup-border: var(--border-light);
   
   display: flex;
   height: 100vh;
@@ -436,9 +450,9 @@ code, pre {
 .flup-card {
   background-color: var(--flup-card);
   border: 1px solid var(--flup-border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--shadow-sm);
 }
 
 .flup-stat-header {
@@ -534,16 +548,18 @@ code, pre {
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-weight: 500;
   font-size: 0.95rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
 }
 
 .flup-btn-primary:hover {
-  background-color: #0f766e;
+  background-color: var(--accent-primary-hover);
+  box-shadow: var(--shadow-md);
 }

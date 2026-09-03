@@ -235,7 +235,7 @@ export default function Dashboard() {
     }));
   }, [jobs]);
 
-  const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#ec4899'];
+  const COLORS = ['#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE'];
 
   return (
     <div className="light-dashboard">
@@ -362,8 +362,8 @@ export default function Dashboard() {
                       <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
                       <RechartsTooltip cursor={{fill: '#f1f5f9'}} contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'}} />
                       <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                      <Bar dataKey="completed" name="Completed" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={12} />
-                      <Bar dataKey="failed" name="Failed" fill="#f59e0b" radius={[4, 4, 0, 0]} barSize={12} />
+                      <Bar dataKey="completed" name="Completed" fill="#2563EB" radius={[4, 4, 0, 0]} barSize={12} />
+                      <Bar dataKey="failed" name="Failed" fill="#94a3b8" radius={[4, 4, 0, 0]} barSize={12} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
