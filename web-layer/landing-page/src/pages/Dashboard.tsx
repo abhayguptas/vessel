@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Layers, Activity, LayoutDashboard, Key, Settings, CheckCircle, XCircle, Plus, TrendingUp, Package, LogOut as LogOutIcon, X } from 'lucide-react';
+import { Layers, Activity, LayoutDashboard, Key, Settings, CheckCircle, XCircle, Plus, TrendingUp, Package, LogOut as LogOutIcon, X, Copy, Check } from 'lucide-react';
 import { VesselLogo } from '../Logo';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { useAuth } from '../AuthContext';
@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [triggerError, setTriggerError] = useState('');
 
   const [newKey, setNewKey] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const [stats, setStats] = useState({ total: 0, completed: 0, failed: 0, running: 0, queued: 0, successRate: 0 });
   const [activeWorkers, setActiveWorkers] = useState(0);
@@ -481,8 +482,18 @@ export default function Dashboard() {
                 <p style={{ color: '#047857', marginBottom: '1rem', fontSize: '0.9rem' }}>
                   Please copy this key now. You will not be able to see it again.
                 </p>
-                <code style={{ background: '#ffffff', border: '1px solid #a7f3d0', padding: '12px', borderRadius: '4px', display: 'block', fontSize: '1.1rem', letterSpacing: '1px', color: '#065f46' }}>
-                  {newKey}
+                <code style={{ background: '#ffffff', border: '1px solid #a7f3d0', padding: '12px', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '1.1rem', letterSpacing: '1px', color: '#065f46' }}>
+                  <span>{newKey}</span>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(newKey);
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                    style={{ background: '#10b981', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}
+                  >
+                    {copied ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy</>}
+                  </button>
                 </code>
               </div>
             )}
