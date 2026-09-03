@@ -33,6 +33,53 @@ function useScrollReveal() {
   }, []);
 }
 
+/* --- Interactive Spotlight Card --- */
+const InteractiveCard = ({ children }: { children: React.ReactNode }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <div 
+      className="feature-card"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ 
+        background: 'var(--bg-main)', 
+        border: '1px solid var(--border-light)', 
+        borderRadius: '16px', 
+        padding: '2.5rem', 
+        boxShadow: 'var(--shadow-sm)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+    >
+      <div 
+        style={{
+          position: 'absolute',
+          top: position.y,
+          left: position.x,
+          width: '600px',
+          height: '600px',
+          background: 'radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 60%)',
+          transform: 'translate(-50%, -50%)',
+          pointerEvents: 'none',
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.3s ease'
+        }}
+      />
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
 /* --- Components --- */
 
 const Navbar = () => {
@@ -318,29 +365,29 @@ const Features = () => {
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
           
-          <div className="scroll-reveal feature-card" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
+          <InteractiveCard>
             <div style={{ background: 'var(--accent-light)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <Box size={24} color="var(--accent-primary)" />
             </div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 600, marginBottom: '1rem' }}>Isolated Execution</h3>
             <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>Every workload runs in its own ephemeral Docker container, ensuring complete isolation and precise resource control.</p>
-          </div>
+          </InteractiveCard>
           
-          <div className="scroll-reveal delay-1 feature-card" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
+          <InteractiveCard>
             <div style={{ background: 'var(--accent-light)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <Zap size={24} color="var(--accent-primary)" />
             </div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 600, marginBottom: '1rem' }}>Priority Queuing</h3>
             <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>Sort critical workloads into high-priority lanes automatically using Redis-backed sorted sets for millisecond latency.</p>
-          </div>
+          </InteractiveCard>
 
-          <div className="scroll-reveal delay-2 feature-card" style={{ background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
+          <InteractiveCard>
             <div style={{ background: 'var(--accent-light)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <Activity size={24} color="var(--accent-primary)" />
             </div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 600, marginBottom: '1rem' }}>Data-Driven Insights</h3>
             <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>Track execution status, worker heartbeats, and real-time logs streaming seamlessly from the runtime environment.</p>
-          </div>
+          </InteractiveCard>
 
         </div>
       </div>
