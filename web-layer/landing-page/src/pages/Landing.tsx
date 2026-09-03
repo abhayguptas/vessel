@@ -3,8 +3,19 @@ import { Link } from 'react-router-dom';
 import { VesselLogo } from '../Logo';
 import { 
   Activity, Box, Zap, 
-  ArrowRight, Code
+  ArrowRight, Code, LayoutDashboard, Settings, Key, Terminal
 } from 'lucide-react';
+
+const MOCK_JOBS = [
+  { id: 'job_a1c2', type: 'video-processor', status: 'Running', progress: '65%', color: '#3b82f6' },
+  { id: 'job_b4f9', type: 'image-resize', status: 'Completed', progress: '100%', color: '#10b981' },
+  { id: 'job_c7e3', type: 'data-sync', status: 'Failed', progress: '32%', color: '#ef4444' },
+  { id: 'job_d8f4', type: 'pdf-generator', status: 'Completed', progress: '100%', color: '#10b981' },
+  { id: 'job_e9g5', type: 'video-processor', status: 'Running', progress: '88%', color: '#3b82f6' },
+  { id: 'job_f0h6', type: 'email-campaign', status: 'Completed', progress: '100%', color: '#10b981' },
+  { id: 'job_g1i7', type: 'data-sync', status: 'Running', progress: '15%', color: '#3b82f6' },
+  { id: 'job_h2j8', type: 'image-resize', status: 'Completed', progress: '100%', color: '#10b981' }
+];
 
 /* --- Animations Observer Hook --- */
 function useScrollReveal() {
@@ -110,11 +121,26 @@ const Hero = () => {
           {/* Animated Mock UI */}
           <div style={{ width: '100%', height: '500px', background: 'var(--bg-sand)', borderRadius: '16px', display: 'flex', overflow: 'hidden' }}>
             {/* Sidebar */}
-            <div style={{ width: '240px', background: 'white', borderRight: '1px solid var(--border-light)', padding: '2rem 1rem' }}>
-              <div style={{ height: '32px', width: '120px', background: '#e2e8f0', borderRadius: '6px', marginBottom: '3rem' }}></div>
-              <div style={{ height: '24px', width: '80%', background: 'var(--accent-light)', borderRadius: '6px', marginBottom: '1rem' }}></div>
-              <div style={{ height: '24px', width: '70%', background: '#f1f5f9', borderRadius: '6px', marginBottom: '1rem' }}></div>
-              <div style={{ height: '24px', width: '90%', background: '#f1f5f9', borderRadius: '6px', marginBottom: '1rem' }}></div>
+            <div style={{ width: '240px', background: 'white', borderRight: '1px solid var(--border-light)', padding: '2rem 1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-main)', fontWeight: 700, fontSize: '1.25rem', fontFamily: 'Instrument Sans', marginBottom: '2rem', paddingLeft: '8px' }}>
+                <VesselLogo size={24} />
+              </div>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', background: 'var(--accent-light)', color: 'var(--accent-primary)', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 600 }}>
+                <LayoutDashboard size={18} /> Overview
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', color: 'var(--text-muted)', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 500 }}>
+                <Activity size={18} /> Workloads
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', color: 'var(--text-muted)', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 500 }}>
+                <Terminal size={18} /> Logs
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', color: 'var(--text-muted)', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 500 }}>
+                <Key size={18} /> API Keys
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', color: 'var(--text-muted)', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 500 }}>
+                <Settings size={18} /> Settings
+              </div>
             </div>
             {/* Main Area */}
             <div style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -140,19 +166,26 @@ const Hero = () => {
               {/* Live Jobs Stream */}
               <div style={{ background: 'white', flex: 1, borderRadius: '12px', border: '1px solid var(--border-light)', padding: '1.5rem', boxShadow: 'var(--shadow-sm)', overflow: 'hidden', position: 'relative' }}>
                 <div style={{ fontSize: '0.9rem', color: 'var(--text-main)', marginBottom: '1rem', fontWeight: 600 }}>Live Execution Stream</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'absolute', width: 'calc(100% - 3rem)', animation: 'scrollUp 15s linear infinite' }}>
-                  {/* Repeated mock job rows for scrolling effect */}
-                  {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-                    <div key={i} style={{ border: '1px solid var(--border-light)', borderRadius: '8px', padding: '12px', background: '#f8fafc' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.85rem' }}>
-                        <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>job_x{Math.floor(Math.random() * 90000)}</span>
-                        <span style={{ color: '#10b981', fontWeight: 500 }}>Completed</span>
+                <div style={{ position: 'absolute', width: 'calc(100% - 3rem)', height: '100%', overflow: 'hidden' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', animation: 'scrollUp 25s linear infinite' }}>
+                    {/* Double the list for seamless marquee loop */}
+                    {[...MOCK_JOBS, ...MOCK_JOBS].map((job, i) => (
+                      <div key={i} style={{ border: '1px solid var(--border-light)', borderRadius: '8px', padding: '12px', background: '#f8fafc' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.85rem' }}>
+                          <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>{job.id} <span style={{ color: 'var(--text-muted)', fontWeight: 400, marginLeft: '8px', fontFamily: 'Inter' }}>{job.type}</span></span>
+                          <span style={{ color: job.color, fontWeight: 500 }}>{job.status}</span>
+                        </div>
+                        <div style={{ width: '100%', background: '#e2e8f0', height: '4px', borderRadius: '2px', overflow: 'hidden' }}>
+                          <div style={{ 
+                            width: job.progress, 
+                            background: job.color, 
+                            height: '100%', 
+                            animation: job.status === 'Running' ? 'progress 2s ease-out infinite' : 'none' 
+                          }}></div>
+                        </div>
                       </div>
-                      <div style={{ width: '100%', background: '#e2e8f0', height: '4px', borderRadius: '2px', overflow: 'hidden' }}>
-                        <div style={{ width: '100%', background: '#10b981', height: '100%', animation: 'progress 3s ease-out infinite' }}></div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
